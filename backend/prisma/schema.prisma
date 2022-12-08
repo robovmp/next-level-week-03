@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Orphanage {
+  @@map("orphanages")
+
+  id              Int     @id @default(autoincrement())
+  name            String
+  latitude        Decimal @default(00000000.00)
+  longitude       Decimal @default(00000000.00)
+  about           String
+  instructions    String
+  openingHours    String
+  openOnWeekends  Boolean @default(false)
+  images          Image[]
+
+}
+
+model Image {
+  @@map("images")
+  
+  id              Int         @id @default(autoincrement())
+  path            String
+  orphanage       Orphanage   @relation(fields: [orphanageId], references: [id], onDelete: Cascade, onUpdate: Cascade  )
+  orphanageId     Int
+
+}
